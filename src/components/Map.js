@@ -9,7 +9,7 @@ class Map extends Component {
 
   onScriptLoad() {
     const map = new window.google.maps.Map(
-      document.getElementById(this.props.id),
+      document.getElementById("myMap"),
       {
         zoom: 13,
         center: { lat: 40.758896, lng: -73.985130 }
@@ -35,7 +35,7 @@ class Map extends Component {
   }
 
   render() {
-    return (<div style={{ width: 500, height: 500 }} id={this.props.id} />);
+    return (<div className="map-container" id="myMap" />);
   }
 }
 
