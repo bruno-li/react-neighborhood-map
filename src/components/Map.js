@@ -8,13 +8,10 @@ class Map extends Component {
   }
 
   onScriptLoad() {
-    const map = new window.google.maps.Map(
-      document.getElementById("myMap"),
-      {
-        zoom: 13,
-        center: { lat: 40.758896, lng: -73.985130 }
-      }
-    );
+    const map = new window.google.maps.Map(document.getElementById("myMap"), {
+      zoom: 12.6,
+      center: { lat: 40.758896, lng: -73.98513 }
+    });
   }
 
   componentDidMount() {
@@ -24,7 +21,6 @@ class Map extends Component {
       s.src = `https://maps.google.com/maps/api/js?key=AIzaSyBC5LUDDNnbuLVJp32DdYn_tXv8ACDZda0`;
       var x = document.getElementsByTagName("script")[0];
       x.parentNode.insertBefore(s, x);
-      // Below is important.
       //We cannot access google.maps until it's finished loading
       s.addEventListener("load", e => {
         this.onScriptLoad();
@@ -35,7 +31,7 @@ class Map extends Component {
   }
 
   render() {
-    return (<div className="map-container" id="myMap" />);
+    return <div className="map-container" id="myMap" />;
   }
 }
 
