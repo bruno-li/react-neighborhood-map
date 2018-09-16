@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
 
 class Map extends Component {
   constructor(props) {
@@ -16,22 +15,25 @@ class Map extends Component {
 
   componentDidMount() {
     if (!window.google) {
-      var s = document.createElement("script");
-      s.type = "text/javascript";
-      s.src = `https://maps.google.com/maps/api/js?key=AIzaSyBC5LUDDNnbuLVJp32DdYn_tXv8ACDZda0`;
-      var x = document.getElementsByTagName("script")[0];
-      x.parentNode.insertBefore(s, x);
+      let script = document.createElement("script");
+      let tag = document.getElementsByTagName("script")[0];
+      script.type = "text/javascript";
+      script.src = `https://maps.google.com/maps/api/js?key=AIzaSyBC5LUDDNnbuLVJp32DdYn_tXv8ACDZda0`;
+      script.async = true;
+      script.onerror = function() {
+        document.write("Google Maps can't be loaded. Please check your connection and reload the page.");
+      };
+      tag.parentNode.insertBefore(script, tag);
       //We cannot access google.maps until it's finished loading
-      s.addEventListener("load", e => {
+      script.addEventListener("load", e => {
         this.onScriptLoad();
       });
     } else {
       this.onScriptLoad();
     }
   }
-
   render() {
-    return <div className="map-container" id="myMap" />;
+    return <div className="map-container" id="myMap"/>;
   }
 }
 
