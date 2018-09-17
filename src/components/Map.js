@@ -8,6 +8,7 @@ class Map extends Component {
     this.markersList = this.markersList.bind(this);
 
     this.state = {
+      
       infoWindow: '',
       map: '',
       markers: [
@@ -92,7 +93,7 @@ class Map extends Component {
 
       mark.addListener("click", function() {
         self.openMarker(mark);
-        mark.setAnimation(null);
+        // mark.setAnimation(null);
       });
     });
   }
@@ -116,6 +117,9 @@ class Map extends Component {
       this.state.infoWindow.marker = marker;
       this.state.infoWindow.open(this.state.map, marker);
       marker.setAnimation(window.google.maps.Animation.BOUNCE);
+      setTimeout(function() {
+          marker.setAnimation(null);
+        }, 1000);
       this.markerInfo(url); // send data to be fetched
     }
   }
