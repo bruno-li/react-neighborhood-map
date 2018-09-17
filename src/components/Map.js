@@ -5,9 +5,11 @@ class Map extends Component {
     super(props);
     // retain object instance when used in the function
     this.initMap = this.initMap.bind(this);
+    this.markersList = this.markersList.bind(this);
 
     this.state = {
-
+      infoWindow: '',
+      map: '',
       markers: [
         {
           lat: 40.750298,
@@ -20,9 +22,9 @@ class Map extends Component {
           name: "Empire State Building"
         },
         {
-          lat: 40.689247,
-          long: -74.044502,
-          name: "Statue of Liberty"
+          lat: 40.705842,
+          long: -74.008468,
+          name: "Wall Street"
         },
         {
           lat: 40.712742,
@@ -32,7 +34,12 @@ class Map extends Component {
         {
           lat: 40.785091,
           long: -73.968285,
-          name: "Madison Square Garden"
+          name: "Central Park"
+        },
+        {
+          lat: 40.758896,
+          long: -73.98513,
+          name: "Times Square"
         }
       ]
     };
@@ -51,39 +58,102 @@ class Map extends Component {
         );
       };
       tag.parentNode.insertBefore(script, tag);
-
       //We cannot access google.maps until it's finished loading
       script.addEventListener("load", e => {
         this.initMap();
       });
-    } else {
-      this.initMap();
-    }
+    } 
   }
 
   initMap() {
     const map = new window.google.maps.Map(document.getElementById("myMap"), {
-      zoom: 12.6,
+      zoom: 12,
       center: { lat: 40.758896, lng: -73.98513 }
     });
+
+    let InfoWindow = new window.google.maps.InfoWindow({});
+
+    this.setState({ map: map, infoWindow: InfoWindow });
     this.markersList(map);
   }
-
 
   markersList(map) {
     let self = this;
 
     this.state.markers.forEach(marker => {
-      const location = {lat: marker.lat, lng: marker.long}
+      const location = { lat: marker.lat, lng: marker.long };
 
       let mark = new window.google.maps.Marker({
-        position: location,
         map: map,
-        title: marker.name
-      })
-    })
+        position: location,
+        title: marker.name,
+        animation: window.google.maps.Animation.DROP
+      });
+
+      mark.addListener("click", function() {
+        self.openMarker(mark);
+        mark.setAnimation(null);
+      });
+    });
   }
 
+  openMarker(marker) {
+    const clientId = "BVHR03BJ55MAF4NBUNKM5BV3U3XBEN0DSCJQBCJI1ZABIEO0\n";
+    const clientSecret = "Z51JLSAVQYFCZBACBRXIBP01U5F2BDUZB3UZZKUNY1HY3ATH\n";
+    const url =
+      "https://api.foursquare.com/v2/venues/search?client_id=" +
+      clientId +
+      "&client_secret=" +
+      clientSecret +
+      "&v=20130815&ll=" +
+      marker.getPosition().lat() +
+      "," +
+      marker.getPosition().lng() +
+      "&limit=1";
+
+    // checks if infoWindow is not already open on the current marker
+    if (this.state.infoWindow.marker !== marker) {
+      this.state.infoWindow.marker = marker;
+      this.state.infoWindow.open(this.state.map, marker);
+      marker.setAnimation(window.google.maps.Animation.BOUNCE);
+      this.markerInfo(url); // send data to be fetched
+    }
+  }
+
+  markerInfo(url) {
+    // fetches foursquare api data
+    let self = this.state.infoWindow;
+    let place;
+    fetch(url)
+      .then(function(resp) {
+        if (resp.status !== 200) {
+          const err = "Unable to load data. Try refreshing page.";
+          this.setState({ infoWindow: err });
+        }
+        // checkes the retrive text in the response
+        resp.json().then(function(data) {
+          let place = data.response.venues[0];
+          let info =
+            "<div id='marker'>" +
+            "<h2>" +
+            self.marker.title +
+            "</h2>" +
+            "<p><b>Address:</b> " +
+            place.location.address +
+            ", " +
+            place.location.city +
+            "</p>" +
+            "</div>";
+          self.setContent(info);
+        });
+
+        console.log(place);
+      })
+      .catch(function(err) {
+        const error = "Unable to load data. Try refreshing page.";
+        self.setContent(error);
+      });
+  }
 
   render() {
     return <div className="map-container" id="myMap" />;
