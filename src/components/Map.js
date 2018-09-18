@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import madison from '../img/madison.jpg';
+import centralPark from '../img/central_park.jpg';
+import timesSquare from '../img/times_square.jpg';
+import wallStreet from '../img/wallstreet.jpg';
+import worldTrade from '../img/world_trade.jpg';
+import empire from '../img/empire.jpg';
+
 
 class Map extends Component {
   constructor(props) {
@@ -22,27 +28,35 @@ class Map extends Component {
         {
           lat: 40.748817,
           long: -73.985428,
-          name: "Empire State Building"
+          name: "Empire State Building",
+          photo: empire          
+
         },
         {
           lat: 40.705842,
           long: -74.008468,
-          name: "Wall Street"
+          name: "Wall Street",
+          photo: wallStreet          
+
         },
         {
           lat: 40.712742,
           long: -74.013382,
-          name: "One World Trade Center"
+          name: "One World Trade Center",
+          photo: worldTrade          
+
         },
         {
           lat: 40.785091,
           long: -73.968285,
-          name: "Central Park"
+          name: "Central Park",
+          photo: centralPark
         },
         {
           lat: 40.758896,
           long: -73.98513,
-          name: "Times Square"
+          name: "Times Square",
+          photo: timesSquare
         }
       ]
     };
