@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import madison from '../img/madison.jpg';
 
 class Map extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class Map extends Component {
         {
           lat: 40.750298,
           long: -73.993324,
-          name: "Madison Square Garden"
+          name: "Madison Square Garden",
+          photo: madison          
         },
         {
           lat: 40.748817,
@@ -88,6 +90,7 @@ class Map extends Component {
         map: map,
         position: location,
         title: marker.name,
+        photo: marker.photo,
         animation: window.google.maps.Animation.DROP
       });
 
@@ -101,16 +104,7 @@ class Map extends Component {
   openMarker(marker) {
     const clientId = "BVHR03BJ55MAF4NBUNKM5BV3U3XBEN0DSCJQBCJI1ZABIEO0\n";
     const clientSecret = "Z51JLSAVQYFCZBACBRXIBP01U5F2BDUZB3UZZKUNY1HY3ATH\n";
-    const url =
-      "https://api.foursquare.com/v2/venues/search?client_id=" +
-      clientId +
-      "&client_secret=" +
-      clientSecret +
-      "&v=20130815&ll=" +
-      marker.getPosition().lat() +
-      "," +
-      marker.getPosition().lng() +
-      "&limit=1";
+    const url = `https://api.foursquare.com/v2/venues/search?client_id=${clientId}&client_secret=${clientSecret}&v=20130815&ll=${marker.getPosition().lat()},${marker.getPosition().lng()}&limit=1`
 
     // checks if infoWindow is not already open on the current marker
     if (this.state.infoWindow.marker !== marker) {
@@ -121,7 +115,8 @@ class Map extends Component {
           marker.setAnimation(null);
         }, 1000);
       this.markerInfo(url); // send data to be fetched
-    }
+    };
+    
   }
 
   markerInfo(url) {
@@ -137,8 +132,10 @@ class Map extends Component {
         // checkes the retrive text in the response
         resp.json().then(function(data) {
           let place = data.response.venues[0];
+          console.log(data);
           let info =
             "<div id='marker'>" +
+            "<img src="+self.marker.photo+"/>" +
             "<h2>" +
             self.marker.title +
             "</h2>" +
@@ -146,12 +143,12 @@ class Map extends Component {
             place.location.address +
             ", " +
             place.location.city +
+            ", " +
+            place.location.state +
             "</p>" +
             "</div>";
           self.setContent(info);
         });
-
-        console.log(place);
       })
       .catch(function(err) {
         const error = "Unable to load data. Try refreshing page.";
