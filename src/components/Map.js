@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import madison from '../img/madison.jpg';
-import empireState from '../img/empire.jpg';
-import centralPark from '../img/central_park.jpg';
-import timesSquare from '../img/times_square.jpg';
-import wallStreet from '../img/wallstreet.jpg';
-import worldTrade from '../img/world_trade.jpg';
-
+import madison from "../img/madison.jpg";
+import empireState from "../img/empire.jpg";
+import centralPark from "../img/central_park.jpg";
+import timesSquare from "../img/times_square.jpg";
+import wallStreet from "../img/wallstreet.jpg";
+import worldTrade from "../img/world_trade.jpg";
 
 class Map extends Component {
   constructor(props) {
@@ -15,33 +14,32 @@ class Map extends Component {
     this.markersList = this.markersList.bind(this);
 
     this.state = {
-      
-      infoWindow: '',
-      map: '',
+      infoWindow: "",
+      map: "",
       markers: [
         {
           lat: 40.750298,
           long: -73.993324,
           name: "Madison Square Garden",
-          photo: madison          
+          photo: madison
         },
         {
           lat: 40.748817,
           long: -73.985428,
           name: "Empire State Building",
-          photo: empireState          
+          photo: empireState
         },
         {
           lat: 40.705842,
           long: -74.008468,
           name: "Wall Street",
-          photo: wallStreet          
+          photo: wallStreet
         },
         {
           lat: 40.712742,
           long: -74.013382,
           name: "One World Trade Center",
-          photo: worldTrade          
+          photo: worldTrade
         },
         {
           lat: 40.785091,
@@ -66,6 +64,7 @@ class Map extends Component {
       script.type = "text/javascript";
       script.src = `https://maps.google.com/maps/api/js?key=AIzaSyBC5LUDDNnbuLVJp32DdYn_tXv8ACDZda0`;
       script.async = true;
+      // error message if map fails to load
       script.onerror = function() {
         document.write(
           "Google Maps can't be loaded. Please check your connection and reload the page."
@@ -76,7 +75,7 @@ class Map extends Component {
       script.addEventListener("load", e => {
         this.initMap();
       });
-    } 
+    }
   }
 
   initMap() {
@@ -115,7 +114,9 @@ class Map extends Component {
   openMarker(marker) {
     const clientId = "BVHR03BJ55MAF4NBUNKM5BV3U3XBEN0DSCJQBCJI1ZABIEO0\n";
     const clientSecret = "Z51JLSAVQYFCZBACBRXIBP01U5F2BDUZB3UZZKUNY1HY3ATH\n";
-    const url = `https://api.foursquare.com/v2/venues/search?client_id=${clientId}&client_secret=${clientSecret}&v=20130815&ll=${marker.getPosition().lat()},${marker.getPosition().lng()}&limit=1`
+    const url = `https://api.foursquare.com/v2/venues/search?client_id=${clientId}&client_secret=${clientSecret}&v=20130815&ll=${marker
+      .getPosition()
+      .lat()},${marker.getPosition().lng()}&limit=1`;
     let info = this.state.infoWindow;
     // checks if infoWindow is not already open on the current marker
     if (info.marker !== marker) {
@@ -123,11 +124,10 @@ class Map extends Component {
       info.open(this.state.map, marker);
       marker.setAnimation(window.google.maps.Animation.BOUNCE);
       setTimeout(function() {
-          marker.setAnimation(null);
-        }, 1000);
+        marker.setAnimation(null);
+      }, 1000);
       this.markerInfo(url); // send data to be fetched
-    };
-    
+    }
   }
 
   markerInfo(url) {
@@ -143,15 +143,10 @@ class Map extends Component {
         resp.json().then(function(data) {
           let place = data.response.venues[0];
           console.log(data);
-          let info =
-            `<div id='marker'>
-            <img src="${self.marker.photo}"/>
-             <h2> ${self.marker.title} </h2> 
-             <p><b>Address:</b>
-             ${place.location.address}, 
-             ${place.location.city}, 
-             ${place.location.state}
-              </p></div>`;
+          let info = `
+             <div id='marker'>
+             <img src="${self.marker.photo}"/><h1>${self.marker.title}</h1><h2>Address:</h2><p>${place.location.address}, ${place.location.city}, ${place.location.state}</p>
+             </div>`;
           self.setContent(info);
         });
       })
@@ -162,7 +157,7 @@ class Map extends Component {
   }
 
   render() {
-    return <div className="map-container" id="myMap" />;
+    return <div className="map-container" role="application" id="myMap" />;
   }
 }
 
