@@ -116,11 +116,11 @@ class Map extends Component {
     const clientId = "BVHR03BJ55MAF4NBUNKM5BV3U3XBEN0DSCJQBCJI1ZABIEO0\n";
     const clientSecret = "Z51JLSAVQYFCZBACBRXIBP01U5F2BDUZB3UZZKUNY1HY3ATH\n";
     const url = `https://api.foursquare.com/v2/venues/search?client_id=${clientId}&client_secret=${clientSecret}&v=20130815&ll=${marker.getPosition().lat()},${marker.getPosition().lng()}&limit=1`
-
+    let info = this.state.infoWindow;
     // checks if infoWindow is not already open on the current marker
-    if (this.state.infoWindow.marker !== marker) {
-      this.state.infoWindow.marker = marker;
-      this.state.infoWindow.open(this.state.map, marker);
+    if (info.marker !== marker) {
+      info.marker = marker;
+      info.open(this.state.map, marker);
       marker.setAnimation(window.google.maps.Animation.BOUNCE);
       setTimeout(function() {
           marker.setAnimation(null);
@@ -133,7 +133,6 @@ class Map extends Component {
   markerInfo(url) {
     // fetches foursquare api data
     let self = this.state.infoWindow;
-    let place;
     fetch(url)
       .then(function(resp) {
         if (resp.status !== 200) {
@@ -145,19 +144,14 @@ class Map extends Component {
           let place = data.response.venues[0];
           console.log(data);
           let info =
-            "<div id='marker'>" +
-            "<img src="+self.marker.photo+"/>" +
-            "<h2>" +
-            self.marker.title +
-            "</h2>" +
-            "<p><b>Address:</b> " +
-            place.location.address +
-            ", " +
-            place.location.city +
-            ", " +
-            place.location.state +
-            "</p>" +
-            "</div>";
+            `<div id='marker'>
+            <img src="${self.marker.photo}"/>
+             <h2> ${self.marker.title} </h2> 
+             <p><b>Address:</b>
+             ${place.location.address}, 
+             ${place.location.city}, 
+             ${place.location.state}
+              </p></div>`;
           self.setContent(info);
         });
       })
