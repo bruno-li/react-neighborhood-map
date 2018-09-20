@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import LocationList from "./LocationList";
 import madison from "../img/madison.jpg";
 import empireState from "../img/empire.jpg";
 import centralPark from "../img/central_park.jpg";
@@ -157,7 +158,9 @@ class Map extends Component {
   }
 
   render() {
-    return <div className="map-container" role="application" id="myMap" />;
+    return ( 
+    <div className="map-container" role="application" id="myMap" />
+    )
   }
 }
 
