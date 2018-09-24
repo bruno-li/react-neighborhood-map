@@ -15,8 +15,9 @@ class Map extends Component {
     this.markersList = this.markersList.bind(this);
 
     this.state = {
-      infoWindow: "",
-      map: "",
+      infoWindow: '',
+      map: '',
+      filterMarkers: [],
       markers: [
         {
           lat: 40.750298,
@@ -101,14 +102,18 @@ class Map extends Component {
         map: map,
         position: location,
         title: marker.name,
+        name: marker.name,
         photo: marker.photo,
         animation: window.google.maps.Animation.DROP
       });
 
       mark.addListener("click", function() {
         self.openMarker(mark);
-        // mark.setAnimation(null);
       });
+
+      let virtMarker = this.state.filterMarkers;
+      virtMarker.push(mark);
+      this.setState({ filterMarkers: virtMarker });
     });
   }
 
@@ -146,7 +151,11 @@ class Map extends Component {
           console.log(data);
           let info = `
              <div id='marker'>
-             <img src="${self.marker.photo}"/><h1>${self.marker.title}</h1><h2>Address:</h2><p>${place.location.address}, ${place.location.city}, ${place.location.state}</p>
+             <img src="${self.marker.photo}" alt="${
+            self.marker.name
+          } image"/><h1>${self.marker.title}</h1><h2>Address:</h2><p>${
+            place.location.address
+          }, ${place.location.city}, ${place.location.state}</p>
              </div>`;
           self.setContent(info);
         });
@@ -158,9 +167,14 @@ class Map extends Component {
   }
 
   render() {
-    return ( 
-    <div className="map-container" role="application" id="myMap" />
-    )
+    return (
+      <div>
+        <div className="map-container" role="application" id="myMap" />
+        <LocationList
+        filterMarkers={this.state.filterMarkers}
+        />
+      </div>
+    );
   }
 }
 
