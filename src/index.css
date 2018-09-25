@@ -49,8 +49,56 @@ html {
 .search {
   z-index: 1;
   position: fixed;
-  top: 10%;
+  top: 15%;
   left: 0.8%;
   opacity: 0.9;
   max-height: 50%;
+}
+
+.search-field {
+  width: 220px;
+  padding: 5px;
+  font-size: 14px;
+}
+
+ul {
+  background: white;
+  border: 1px solid lightgrey;
+  padding: 0px;
+  margin: 0;
+  width: 220px;
+  max-height: 200px;
+}
+
+.box {
+  cursor: pointer;
+  padding: 5px;
+}
+
+a {
+  font-size: 16px;
+  color: darkblue;
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+li:hover {
+  background-color: lightgrey;
+}
+
+.button {
+  text-align: center;
+  padding: 5px;
+  font-size: 12px;
+  background-color: white;
+  border: 1px lightgrey solid;
+  cursor: pointer;
+  width: 220px;
+}
+
+.button:hover {
+  background-color: lightgrey;
 }

@@ -23,16 +23,18 @@ class LocationList extends Component {
           id="search-field"
           className="search-field"
           type="text"
-          placeholder="Filter"
+          placeholder="Search location"
         />
         <ul className="location-list">
               {this.state.markers && this.state.markers.length && this.state.markers.map((marker, i) =>
-                            <li key={i}>
+                            <li
+                            className="box"
+                             key={i}>
                                 <a href="#" 
                                 tabIndex="0" role="link">{marker.title
                                 }</a>
                             </li>
-                        )}
+                        )};
          </ul>
         <button className="button">Show/Hide Locations</button>
       </div>
