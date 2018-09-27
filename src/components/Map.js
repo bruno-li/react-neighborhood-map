@@ -13,6 +13,8 @@ class Map extends Component {
     // retain object instance when used in the function
     this.initMap = this.initMap.bind(this);
     this.markersList = this.markersList.bind(this);
+    this.openMarker = this.openMarker.bind(this);
+
 
     this.state = {
       infoWindow: '',
@@ -60,13 +62,15 @@ class Map extends Component {
   }
 
   componentDidMount() {
+ // initlialize map once the google map script tag is loaded into the DOM
     if (!window.google) {
       let script = document.createElement("script");
       let tag = document.getElementsByTagName("script")[0];
       script.type = "text/javascript";
       script.src = `https://maps.google.com/maps/api/js?key=AIzaSyBC5LUDDNnbuLVJp32DdYn_tXv8ACDZda0`;
       script.async = true;
-      // error message if map fails to load
+
+      // error handling message if map fails to load
       script.onerror = function() {
         document.write(
           "Google Maps can't be loaded. Please check your connection and reload the page."
@@ -80,6 +84,7 @@ class Map extends Component {
     }
   }
 
+  // initiliaze map with a default location and zoom
   initMap() {
     const map = new window.google.maps.Map(document.getElementById("myMap"), {
       zoom: 12,
@@ -92,7 +97,10 @@ class Map extends Component {
     this.markersList(map);
   }
 
+  // loop though the list of location from the state management
+  // then initialize a new Marker object according to list
   markersList(map) {
+
     let self = this;
 
     this.state.markers.forEach(marker => {
@@ -107,10 +115,14 @@ class Map extends Component {
         animation: window.google.maps.Animation.DROP
       });
 
+        /* event listener to send request of 
+        the marker to the openMarker function 
+        which fetches the data from foursquare */
       mark.addListener("click", function() {
         self.openMarker(mark);
       });
-
+      
+      //push the location to an array, to pass as a prop for LocationList component for data use
       let virtMarker = this.state.filterMarkers;
       virtMarker.push(mark);
       this.setState({ filterMarkers: virtMarker });
@@ -118,21 +130,25 @@ class Map extends Component {
   }
 
   openMarker(marker) {
+    // fetches foursquare api with my unique client id and secret
     const clientId = "BVHR03BJ55MAF4NBUNKM5BV3U3XBEN0DSCJQBCJI1ZABIEO0\n";
     const clientSecret = "Z51JLSAVQYFCZBACBRXIBP01U5F2BDUZB3UZZKUNY1HY3ATH\n";
     const url = `https://api.foursquare.com/v2/venues/search?client_id=${clientId}&client_secret=${clientSecret}&v=20130815&ll=${marker
       .getPosition()
       .lat()},${marker.getPosition().lng()}&limit=1`;
     let info = this.state.infoWindow;
+
     // checks if infoWindow is not already open on the current marker
     if (info.marker !== marker) {
       info.marker = marker;
       info.open(this.state.map, marker);
       marker.setAnimation(window.google.maps.Animation.BOUNCE);
+
+      // set a timeout for animation to prevent marker to bounce indefinetily
       setTimeout(function() {
         marker.setAnimation(null);
       }, 1000);
-      this.markerInfo(url); // send data to be fetched
+      this.markerInfo(url);
     }
   }
 
@@ -141,6 +157,7 @@ class Map extends Component {
     let self = this.state.infoWindow;
     fetch(url)
       .then(function(resp) {
+        // error handling message if unable to load data
         if (resp.status !== 200) {
           const err = "Unable to load data. Try refreshing page.";
           this.setState({ infoWindow: err });
@@ -172,6 +189,8 @@ class Map extends Component {
         <div className="map-container" role="application" id="myMap" />
         <LocationList
         filterMarkers={this.state.filterMarkers}
+        openInfo={this.openMarker}
+        infoWindow={this.state.infoWindow}
         />
       </div>
     );
