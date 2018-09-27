@@ -4,7 +4,7 @@ class LocationList extends Component {
   constructor() {
     super();
     this.state = {
-      query: '',
+      query: "",
       markers: []
     };
   }
@@ -13,13 +13,28 @@ class LocationList extends Component {
     this.setState({ markers: this.props.filterMarkers });
   }
 
-  openMarker(marker){
+  openMarker(marker) {
     // call props to call the function to open infowindow
     this.props.openInfo(marker);
   }
 
-  render() {
+  search = event => {
+    const query = event.target.value.toLowerCase();
+    const markers = this.props.filterMarkers;
+    const filteredMarkers = [];
 
+    markers.forEach(function(marker) {
+      if (marker.title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+        marker.setVisible(true);
+        filteredMarkers.push(marker);
+      } else {
+        marker.setVisible(false);
+      }
+    });
+    this.setState({ markers: filteredMarkers });
+  };
+
+  render() {
     return (
       <div className="search">
         <input
@@ -29,18 +44,23 @@ class LocationList extends Component {
           className="search-field"
           type="text"
           placeholder="Filter locations"
+          onChange={this.search}
         />
-        <ul role="list " className="location-list">
+        <ul className="location-list">
           {this.state.markers &&
             this.state.markers.length &&
             this.state.markers.map((marker, i) => (
-              <li className="box" key={i}>
-                <a tabIndex="0" role="button"
+              <a
+                role="button"
                 onClick={this.props.openInfo.bind(this, marker)}
-                >
+                key={i}
+              >
+                <li className="box"
+                 tabIndex="0"
+                 >
                   {marker.title}
-                </a>
-              </li>
+                </li>
+              </a>
             ))}
           ;
         </ul>

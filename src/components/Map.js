@@ -165,7 +165,6 @@ class Map extends Component {
         // checkes the retrive text in the response
         resp.json().then(function(data) {
           let place = data.response.venues[0];
-          console.log(data);
           let info = `
              <div id='marker'>
              <img src="${self.marker.photo}" alt="${

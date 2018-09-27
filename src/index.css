@@ -49,7 +49,7 @@ html {
 .search {
   z-index: 1;
   position: fixed;
-  top: 15%;
+  top: 13%;
   left: 0.8%;
   opacity: 0.9;
   max-height: 50%;
@@ -67,22 +67,26 @@ ul {
   padding: 0px;
   margin: 0;
   width: 220px;
-  max-height: 200px;
+  max-height: 130px;
+  
 }
 
 .box {
   cursor: pointer;
-  padding: 5px;
+  padding: 2px;
+  margin: 0 7px;
 }
 
-a {
-  font-size: 16px;
+
+li {
+  list-style: none;
+  font-size: 14px;
   color: darkblue;
   text-decoration: none;
 }
 
-li {
-  list-style: none;
+li:focus{
+  background-color: lightgrey;
 }
 
 li:hover {
@@ -92,7 +96,7 @@ li:hover {
 .button {
   text-align: center;
   padding: 5px;
-  font-size: 12px;
+  font-size: 10px;
   background-color: white;
   border: 1px lightgrey solid;
   cursor: pointer;
