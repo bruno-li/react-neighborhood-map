@@ -4,11 +4,11 @@ class LocationList extends Component {
   constructor() {
     super();
     this.state = {
-      query: "",
+      query: '',
       markers: []
     };
   }
-
+  
   componentDidMount() {
     this.setState({ markers: this.props.filterMarkers });
   }
@@ -17,7 +17,8 @@ class LocationList extends Component {
     // call props to call the function to open infowindow
     this.props.openInfo(marker);
   }
-
+  
+  // filter location based on the user input
   search = event => {
     const query = event.target.value.toLowerCase();
     const markers = this.props.filterMarkers;
@@ -61,10 +62,8 @@ class LocationList extends Component {
                   {marker.title}
                 </li>
               </a>
-            ))}
-          ;
+            ))};
         </ul>
-        <button className="button">Show/Hide Locations</button>
       </div>
     );
   }

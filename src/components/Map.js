@@ -10,11 +10,11 @@ import worldTrade from "../img/world_trade.jpg";
 class Map extends Component {
   constructor(props) {
     super(props);
+    
     // retain object instance when used in the function
     this.initMap = this.initMap.bind(this);
     this.markersList = this.markersList.bind(this);
     this.openMarker = this.openMarker.bind(this);
-
 
     this.state = {
       infoWindow: '',
@@ -62,7 +62,7 @@ class Map extends Component {
   }
 
   componentDidMount() {
- // initlialize map once the google map script tag is loaded into the DOM
+ //  create and initlialize tag for google map once the DOM is load
     if (!window.google) {
       let script = document.createElement("script");
       let tag = document.getElementsByTagName("script")[0];
@@ -117,7 +117,7 @@ class Map extends Component {
 
         /* event listener to send request of 
         the marker to the openMarker function 
-        which fetches the data from foursquare */
+        which fetches the data from foursquare API */
       mark.addListener("click", function() {
         self.openMarker(mark);
       });
@@ -129,8 +129,9 @@ class Map extends Component {
     });
   }
 
+  // open infowindow for the marker
   openMarker(marker) {
-    // fetches foursquare api with my unique client id and secret
+    // fetches foursquare API with my unique client id and secret, then populate data from response
     const clientId = "BVHR03BJ55MAF4NBUNKM5BV3U3XBEN0DSCJQBCJI1ZABIEO0\n";
     const clientSecret = "Z51JLSAVQYFCZBACBRXIBP01U5F2BDUZB3UZZKUNY1HY3ATH\n";
     const url = `https://api.foursquare.com/v2/venues/search?client_id=${clientId}&client_secret=${clientSecret}&v=20130815&ll=${marker
@@ -152,14 +153,15 @@ class Map extends Component {
     }
   }
 
+ /* retrive the location data from the foursquare API for the marker 
+ and display it in the infowindow */
   markerInfo(url) {
-    // fetches foursquare api data
     let self = this.state.infoWindow;
     fetch(url)
       .then(function(resp) {
         // error handling message if unable to load data
         if (resp.status !== 200) {
-          const err = "Unable to load data. Try refreshing page.";
+          const err = "Unable to load data. Check your internet connectivity and refresh the page.";
           this.setState({ infoWindow: err });
         }
         // checkes the retrive text in the response
@@ -177,7 +179,7 @@ class Map extends Component {
         });
       })
       .catch(function(err) {
-        const error = "Unable to load data. Try refreshing page.";
+        const error = "Unable to load data. Check your internet connectivity and refresh the page.";
         self.setContent(error);
       });
   }
