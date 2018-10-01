@@ -44,7 +44,7 @@ class LocationList extends Component {
           id="search-field"
           className="search-field"
           type="text"
-          placeholder="Filter locations"
+          placeholder="Search for locations"
           onChange={this.search}
         />
         <ul className="location-list">

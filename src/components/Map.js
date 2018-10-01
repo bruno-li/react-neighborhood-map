@@ -77,7 +77,7 @@ class Map extends Component {
         );
       };
       tag.parentNode.insertBefore(script, tag);
-      //We cannot access google.maps until it's finished loading
+      //We cannot access google maps until it's finished loading
       script.addEventListener("load", e => {
         this.initMap();
       });
@@ -97,8 +97,8 @@ class Map extends Component {
     this.markersList(map);
   }
 
-  // loop though the list of location from the state management
-  // then initialize a new Marker object according to list
+  /* loop though the list of location from the state management
+   then initialize a new Marker object according to list */
   markersList(map) {
 
     let self = this;

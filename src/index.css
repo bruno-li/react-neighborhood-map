@@ -92,24 +92,3 @@ li:focus {
 li:hover {
     background-color: #87CEEB;
 }
-
-.button {
-    text-align: center;
-    padding: 5px;
-    font-size: 11px;
-    background-color: #fff;
-    border: 1px #fff solid;
-    cursor: pointer;
-    width: 198px;
-    margin-left: 1px;
-    border-radius: 0 0 10px 10px;
-}
-
-.button:hover {
-    background-color: #87CEEB;
-}
-
-.button:focus {
-    background-color: #87CEEB;
-    outline: none;
-}
